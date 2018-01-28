@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"quest/internal/app/shared/server"
 )
 
 func main() {
-	fmt.Println("hello world")
+	server.Server()
 }
