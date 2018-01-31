@@ -20,11 +20,9 @@ type User struct {
 	Status       string        `json:"status" bson:"store"`
 	Role         string        `json:"role" bson:"role"`
 	Type         string        `json:"type" bson:"type"`
-	//Address      Address       `json:"address" bson:"address"`
-	//Contact      Contact       `json:"contact" bson:"contact"`
-	DateOfBirth time.Time `json:"dateOfBirth" bson:"dateOfBirth"`
-	DateJoined  time.Time `json:"dateJoined" bson:"dateJoined"`
-	chanF       chan func()
+	DateOfBirth  time.Time     `json:"dateOfBirth" bson:"dateOfBirth"`
+	DateJoined   time.Time     `json:"dateJoined" bson:"dateJoined"`
+	chanF        chan func()
 }
 
 // NewUser constructor
@@ -40,8 +38,6 @@ func NewUser(
 	status,
 	role,
 	tpe string,
-	//address Address,
-	//contact Contact,
 	dateOfBirth,
 	dateJoined time.Time) *User {
 	user := new(User)
@@ -56,11 +52,7 @@ func NewUser(
 	user.Status = status
 	user.Role = role
 	user.Type = tpe
-	//user.Address = address
-	//user.Contact = contact
 	user.DateOfBirth = dateOfBirth
 	user.DateJoined = dateJoined
-	//user.chanF = make(chan func(), 0)
-	//go user.backend()
 	return user
 }

@@ -12,3 +12,23 @@ type Task struct {
 	Status      string    `json:"status"`
 	DateCreated time.Time `json:"dateCreated"`
 }
+
+// NewTask constructor
+func NewTask(
+	uid uint64,
+	author,
+	title,
+	content,
+	category,
+	status string,
+	dateCreated time.Time) *Task {
+	task := new(Task)
+	task.UID = uid
+	task.Author = author
+	task.Title = title
+	task.Content = content
+	task.Category = category
+	task.Status = status
+	task.DateCreated = dateCreated
+	return task
+}
