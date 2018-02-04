@@ -15,7 +15,6 @@ type Task struct {
 
 // NewTask constructor
 func NewTask(
-	uid uint64,
 	author,
 	title,
 	content,
@@ -23,7 +22,6 @@ func NewTask(
 	status string,
 	dateCreated time.Time) *Task {
 	task := new(Task)
-	task.UID = uid
 	task.Author = author
 	task.Title = title
 	task.Content = content
