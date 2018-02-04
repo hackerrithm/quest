@@ -1,6 +1,6 @@
 CREATE DATABASE quest;
 
-CREATE TABLE "user" (
+CREATE TABLE "person" (
    uid                  BIGSERIAL  PRIMARY KEY     NOT NULL,
    user_name            TEXT    NOT NULL,
    first_name           TEXT    NOT NULL,
