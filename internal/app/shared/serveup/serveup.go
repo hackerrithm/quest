@@ -1,4 +1,4 @@
-package server
+package serveup
 
 import (
 	"fmt"
@@ -10,8 +10,8 @@ func greetTheWorld(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello New App!")
 }
 
-// Server starts the app on a port
-func Server() {
+// ServeUp starts the app on a port
+func ServeUp() {
 	http.HandleFunc("/", greetTheWorld)
 	err := http.ListenAndServe(":9000", nil)
 	if err != nil {

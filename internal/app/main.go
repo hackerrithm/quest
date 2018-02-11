@@ -1,9 +1,9 @@
 package main
 
 import (
-	"quest/internal/app/shared/server"
+	"github.com/reacthead/quest/internal/app/shared/serveup"
 )
 
 func main() {
-	server.Server()
+	serveup.ServeUp()
 }
