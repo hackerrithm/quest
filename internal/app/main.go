@@ -1,9 +1,11 @@
 package main
 
 import (
-	"github.com/reacthead/quest/internal/app/shared/serveup"
+	"github.com/reacthead/quest/internal/app/shared/database"
+	"github.com/reacthead/quest/internal/app/shared/server"
 )
 
 func main() {
-	serveup.ServeUp()
+	database.StartDataBase()
+	server.Server()
 }
