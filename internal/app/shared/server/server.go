@@ -13,7 +13,7 @@ func greetTheWorld(w http.ResponseWriter, r *http.Request) {
 // Server starts the app on a port
 func Server() {
 	http.HandleFunc("/", greetTheWorld)
-	err := http.ListenAndServe(":9000", nil)
+	err := http.ListenAndServe(":7000", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
