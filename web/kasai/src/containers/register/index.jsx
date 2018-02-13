@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
-class Home extends Component {
+class Register extends Component {
     state = {  }
     render() {
         return (
             <div>
-              Welcome Home
+                Test reg
             </div>
         );
     }
 }
 
-export default Home;
+export default Register;
