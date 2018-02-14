@@ -13,7 +13,7 @@ const App = () => (
       <div className="navbar-fixed">
       <nav className="blue">
         <div className="nav-wrapper">
-          <a href="#!" className="brand-logo">Logo</a>
+          <a className="brand-logo"><Link to="/">Logo</Link></a>
           <ul className="right hide-on-med-and-down">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/counter">Counter</Link></li>
