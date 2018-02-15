@@ -3,8 +3,10 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/lib/pq" // _ needed
+	"github.com/reacthead/quest/internal/app/model"
 )
 
 const (
@@ -16,12 +18,53 @@ const (
 	DatabaseName = "quest"
 )
 
-// StartDataBase starts a databases
-func StartDataBase() {
+// DataStore is database structure
+type DataStore struct {
+	host     string
+	cachedDB *sql.DB
+}
+
+func (d *DataStore) db() (*sql.DB, error) {
+	db, err := sql.Open("postgres", d.host)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to open database connection for host (%s): %s", d.host, err)
+	}
+
+	return db, nil
+}
+
+// DB is exported db
+var DB *sql.DB
+
+// Get method queries the tasks table for a single task with the given id.
+func (d *DataStore) Get(id uint64) (*model.Task, error) {
+	db, err := d.db()
+	if err != nil {
+		return nil, err
+	}
+	row := db.QueryRow("SELECT title, content FROM task WHERE uid = $1", id)
+	task := &model.Task{UID: id}
+	if err := row.Scan(&(task.Title), &(task.Content)); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to get task %q: %s", id, err)
+	}
+	return task, nil
+}
+
+// init starts a databases
+func init() {
 	dbInfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
 		DatabaseUser, DatabasePassword, DatabaseName)
-	db, err := sql.Open("postgres", dbInfo)
-	checkErr(err)
+	DB, err := sql.Open("postgres", dbInfo)
+	if err != nil {
+		log.Fatal("Invalid DB config:", err)
+	}
+	if err = DB.Ping(); err != nil {
+		log.Fatal("DB unreachable:", err)
+	}
 	fmt.Println("connected")
 
 	/*var lastInsertID int
@@ -29,7 +72,7 @@ func StartDataBase() {
 	checkErr(err)
 	fmt.Println("last inserted id =", lastInsertID)*/
 
-	/*rows, err := db.Query("SELECT user_name, first_name FROM person LIMIT $1", 3)
+	rows, err := DB.Query("SELECT user_name, first_name FROM person LIMIT $1", 3)
 	if err != nil {
 		// handle this error better than this
 		panic(err)
@@ -50,8 +93,8 @@ func StartDataBase() {
 	err = rows.Err()
 	if err != nil {
 		panic(err)
-	}*/
-	defer db.Close()
+	}
+
 }
 
 func checkErr(err error) {
