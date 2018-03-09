@@ -2,8 +2,6 @@ package model
 
 import (
 	"time"
-
-	"github.com/reacthead/quest/internal/app/shared/database"
 )
 
 // Person model
@@ -52,28 +50,4 @@ func NewPerson(
 	// person.DateOfBirth = dateOfBirth
 	// person.DateJoined = dateJoined
 	return *person
-}
-
-func GetAll() ([]Person, error) {
-	rows, err := database.DB.Query("SELECT user_name, first_name FROM person LIMIT $1", 3)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	bks := make([]Person, 0)
-	for rows.Next() {
-		var userName string
-		var firstName string
-		bk := Person{}
-		err := rows.Scan(&userName, &firstName)
-		if err != nil {
-			return nil, err
-		}
-		bks = append(bks, bk)
-	}
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-	return bks, nil
 }
