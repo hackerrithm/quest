@@ -45,14 +45,11 @@ func Server() {
 
 	router := mux.NewRouter()
 
-	//controller.People = append(controller.People, model.NewPerson(1, "kmr", "passcode", "m", "Kemar", "Galloway", "A", "kg@gmail.com", "", "", ""))
-	//controller.People = append(controller.People, model.NewPerson(2, "ashly", "passcode", "f", "Ashley", "Galloway", "A", "ag@gmail.com", "", "", ""))
-
 	router.HandleFunc("/", greetTheWorld).Methods("GET")
-	router.HandleFunc("/people", controller.GetPeopleEndpoint).Methods("GET")
-	router.HandleFunc("/people/{id}", controller.GetPersonEndpoint).Methods("GET")
-	router.HandleFunc("/people/{id}", controller.CreatePersonEndpoint).Methods("POST")
-	router.HandleFunc("/people/{id}", controller.DeletePersonEndpoint).Methods("DELETE")
+	router.HandleFunc("/people", controller.GetUsers).Methods("GET")
+	router.HandleFunc("/people/{id}", controller.GetUser).Methods("GET")
+	router.HandleFunc("/people", controller.CreateUser).Methods("POST")
+	router.HandleFunc("/people/{id}", controller.DeleteUser).Methods("DELETE")
 
 	srv := &http.Server{
 		Handler: router,

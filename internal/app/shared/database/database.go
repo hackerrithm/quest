@@ -36,9 +36,3 @@ func NewOpen() (DB, error) {
 
 	return DB{db}, err
 }
-
-func checkErr(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
