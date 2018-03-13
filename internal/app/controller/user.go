@@ -10,7 +10,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/reacthead/quest/internal/app/model"
-	"github.com/reacthead/quest/internal/app/repository"
+	"github.com/reacthead/quest/internal/app/repository/user"
 	"github.com/reacthead/quest/internal/app/shared/errorplay"
 )
 
@@ -25,7 +25,7 @@ func GetUser(w http.ResponseWriter, req *http.Request) {
 
 	id := uint64(i)
 
-	user, err := repository.GetOne(id)
+	user, err := user.GetOne(id)
 	errorplay.CheckErr(err)
 
 	b, err := json.Marshal(user)
@@ -38,7 +38,7 @@ func GetUser(w http.ResponseWriter, req *http.Request) {
 
 // GetUsers gets all users
 func GetUsers(w http.ResponseWriter, req *http.Request) {
-	users, err := repository.GetAll()
+	users, err := user.GetAll()
 	errorplay.CheckErr(err)
 	b, err := json.Marshal(users)
 	if err != nil {
@@ -54,13 +54,13 @@ func CreateUser(w http.ResponseWriter, req *http.Request) {
 
 	requestBody := []byte(body)
 
-	var user model.User
-	err := json.Unmarshal(requestBody, &user)
+	var userModel model.User
+	err := json.Unmarshal(requestBody, &userModel)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
 
-	u := repository.Post(user)
+	u := user.Post(userModel)
 
 	fmt.Println(u)
 
@@ -81,13 +81,13 @@ func UpdateUser(w http.ResponseWriter, req *http.Request) {
 	errorplay.CheckErr(readErr)
 
 	requestBody := []byte(body)
-	var user model.User
-	err = json.Unmarshal(requestBody, &user)
+	var userModel model.User
+	err = json.Unmarshal(requestBody, &userModel)
 	errorplay.CheckErr(err)
-	fmt.Printf("%+v", user)
+	fmt.Printf("%+v", userModel)
 
 	var changedUID = id
-	changedUID, err = repository.Put(id, user)
+	changedUID, err = user.Put(id, userModel)
 	errorplay.CheckErr(err)
 
 	fmt.Println(changedUID)
@@ -105,7 +105,7 @@ func DeleteUser(w http.ResponseWriter, req *http.Request) {
 
 	id := uint64(i)
 
-	user, err := repository.Delete(id)
+	user, err := user.Delete(id)
 	errorplay.CheckErr(err)
 
 	json.NewEncoder(w).Encode(user)

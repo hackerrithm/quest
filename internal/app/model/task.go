@@ -11,17 +11,18 @@ import (
 type Task struct {
 	gorm.Model
 	UID         uint64    `gorm:"primary_key"`
-	Author      uint64    `json:"author"`
+	Author      string    `json:"author"`
 	Title       string    `json:"title"`
 	Content     string    `json:"content"`
 	Category    string    `json:"category"`
 	Status      string    `json:"status"`
 	DateCreated time.Time `json:"dateCreated"`
+	UserID      int       `gorm:"index"` // Foreign key (belongs to), tag `index` will create index for this column
 }
 
 // NewTask constructor
 func NewTask(
-	author uint64,
+	author string,
 	title,
 	content,
 	category,
@@ -38,5 +39,5 @@ func NewTask(
 }
 
 func (t Task) String() string {
-	return fmt.Sprintf("Task<%d %s %d>", t.UID, t.Title, t.Author)
+	return fmt.Sprintf("Task<%d %s %s>", t.UID, t.Title, t.Author)
 }

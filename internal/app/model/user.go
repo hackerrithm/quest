@@ -20,6 +20,7 @@ type User struct {
 	Status       string      `json:"status"`
 	Role         string      `json:"role"`
 	DateJoined   pq.NullTime `json:"datejoined"`
+	task         []Task
 }
 
 // NewUser constructor
@@ -35,7 +36,8 @@ func NewUser(
 	picture string,
 	status,
 	role string,
-	dateJoined pq.NullTime) User {
+	dateJoined pq.NullTime,
+	task []Task) User {
 	user := new(User)
 	user.UID = uid
 	user.UserName = userName
@@ -49,5 +51,6 @@ func NewUser(
 	user.Status = status
 	user.Role = role
 	user.DateJoined = dateJoined
+	user.task = append(user.task)
 	return *user
 }

@@ -26,7 +26,13 @@ func DBInitializerCaller() {
 	fmt.Println("Connected to database: ", DB)
 
 	//Create table for model `Task`
-	//DB.CreateTable(&model.Task{})
+	// DB.CreateTable(&model.User{})
+
+	//will append "ENGINE=InnoDB" to the SQL statement when creating table `task`
+	// DB.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&model.User{})
+
+	//Create table for model `Task`
+	// DB.CreateTable(&model.Task{})
 
 	//will append "ENGINE=InnoDB" to the SQL statement when creating table `task`
 	//DB.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&model.Task{})
@@ -45,6 +51,12 @@ func Server() {
 	router.HandleFunc("/users", controller.CreateUser).Methods("POST")
 	router.HandleFunc("/user/{id}", controller.UpdateUser).Methods("PUT")
 	router.HandleFunc("/user/{id}", controller.DeleteUser).Methods("DELETE")
+
+	router.HandleFunc("/tasks", controller.GetTasks).Methods("GET")
+	router.HandleFunc("/task/{id}", controller.GetTask).Methods("GET")
+	router.HandleFunc("/tasks", controller.CreateTask).Methods("POST")
+	router.HandleFunc("/task/{id}", controller.UpdateTask).Methods("PUT")
+	router.HandleFunc("/task/{id}", controller.DeleteTask).Methods("DELETE")
 
 	srv := &http.Server{
 		Handler: router,
