@@ -5,7 +5,13 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/reacthead/quest/internal/app/shared/errorplay"
+
+	"github.com/jinzhu/gorm"
+
+	"github.com/go-pg/pg"
 	_ "github.com/lib/pq" // _ needed
+	"github.com/reacthead/quest/internal/app/model"
 )
 
 const (
@@ -22,7 +28,17 @@ type DB struct {
 	*sql.DB
 }
 
-// NewOpen exported for creating a new POstgresql instance
+// PSQLDB is exported db
+type PSQLDB struct {
+	*pg.DB
+}
+
+// GORMDB is exported db
+type GORMDB struct {
+	*gorm.DB
+}
+
+// NewOpen exported for creating a new Postgresql instance
 func NewOpen() (DB, error) {
 	dbInfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
 		DatabaseUser, DatabasePassword, DatabaseName)
@@ -35,4 +51,43 @@ func NewOpen() (DB, error) {
 	}
 
 	return DB{db}, err
+}
+
+// DBModel is or database model
+func DBModel() *pg.DB {
+	db := pg.Connect(&pg.Options{
+		User:     DatabaseUser,
+		Password: DatabasePassword,
+		Database: DatabaseName,
+	})
+
+	/*err := createSchema(db)
+	if err != nil {
+		panic(err)
+	}*/
+
+	return db
+
+}
+
+func createSchema(db *pg.DB) error {
+	for _, model := range []interface{}{&model.User{}, &model.Task{}} {
+		err := db.CreateTable(model, nil)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// NewGormOpen exported for creating a new Postgresql instance
+func NewGormOpen() (GORMDB, error) {
+	db, err := gorm.Open("postgres",
+		`host=localhost 
+			user=postgres password=newcode
+			dbname=quest 
+			sslmode=disable`)
+	errorplay.CheckErr(err)
+
+	return GORMDB{db}, nil
 }

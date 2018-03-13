@@ -1,12 +1,12 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/reacthead/quest/internal/app/controller"
@@ -15,41 +15,36 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func greetTheWorld(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello New App!")
-}
-
-// DBInitializerCaller starts MySQL db
+// DBInitializerCaller starts Postgres db
 func DBInitializerCaller() {
-	DB, err := database.NewOpen()
+	DB, err := database.NewGormOpen()
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	defer DB.Close()
+	fmt.Println("Connected to database: ", DB)
 
-	// Open doesn't open a connection. Validate DSN data:
-	err = DB.Ping()
-	if err != nil {
-		panic(err.Error()) // proper error handling instead of panic in your app
-	}
+	// Create table for model `User`
+	//DB.CreateTable(&model.User{})
 
-	fmt.Println("Connected to database")
+	// will append "ENGINE=InnoDB" to the SQL statement when creating table `users`
+	//DB.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&model.User{})
 
 }
 
 // Server starts the app on a port
 func Server() {
+	var wait time.Duration
 	DBInitializerCaller()
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", greetTheWorld).Methods("GET")
-	router.HandleFunc("/people", controller.GetUsers).Methods("GET")
-	router.HandleFunc("/people/{id}", controller.GetUser).Methods("GET")
-	router.HandleFunc("/people", controller.CreateUser).Methods("POST")
-	router.HandleFunc("/people/{id}", controller.DeleteUser).Methods("DELETE")
+	router.HandleFunc("/users", controller.GetUsers).Methods("GET")
+	router.HandleFunc("/user/{id}", controller.GetUser).Methods("GET")
+	router.HandleFunc("/users", controller.CreateUser).Methods("POST")
+	router.HandleFunc("/user/{id}", controller.UpdateUser).Methods("PUT")
+	router.HandleFunc("/user/{id}", controller.DeleteUser).Methods("DELETE")
 
 	srv := &http.Server{
 		Handler: router,
@@ -60,14 +55,28 @@ func Server() {
 		IdleTimeout:  120 * time.Minute,
 	}
 
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	signal.Notify(c, syscall.SIGTERM)
+	// Run our server in a goroutine so that it doesn't block.
 	go func() {
-		<-c
-		log.Println("Shutting down server")
-		os.Exit(1)
+		if err := srv.ListenAndServe(); err != nil {
+			log.Println(err)
+		}
 	}()
 
-	log.Fatal(srv.ListenAndServe())
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+
+	// Block until we receive our signal.
+	<-c
+
+	// Create a deadline to wait for.
+	ctx, cancel := context.WithTimeout(context.Background(), wait)
+	defer cancel()
+	// Doesn't block if no connections, but will otherwise wait
+	// until the timeout deadline.
+	srv.Shutdown(ctx)
+	// Optionally, you could run srv.Shutdown in a goroutine and block on
+	// <-ctx.Done() if your application should wait for other services
+	// to finalize based on context cancellation.
+	log.Println("shutting down")
+	os.Exit(0)
 }

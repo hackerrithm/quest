@@ -1,11 +1,17 @@
 package model
 
-import "time"
+import (
+	"fmt"
+	"time"
+
+	"github.com/jinzhu/gorm"
+)
 
 // Task model
 type Task struct {
-	UID         uint64
-	Author      string    `json:"author"`
+	gorm.Model
+	UID         uint64    `gorm:"primary_key"`
+	Author      uint64    `json:"author"`
 	Title       string    `json:"title"`
 	Content     string    `json:"content"`
 	Category    string    `json:"category"`
@@ -15,7 +21,7 @@ type Task struct {
 
 // NewTask constructor
 func NewTask(
-	author,
+	author uint64,
 	title,
 	content,
 	category,
@@ -29,4 +35,8 @@ func NewTask(
 	task.Status = status
 	task.DateCreated = dateCreated
 	return task
+}
+
+func (t Task) String() string {
+	return fmt.Sprintf("Task<%d %s %d>", t.UID, t.Title, t.Author)
 }

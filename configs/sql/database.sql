@@ -26,7 +26,6 @@ CREATE TABLE "_user" (
    picture              TEXT    ,
    status               VARCHAR(10)    NOT NULL,
    role                 VARCHAR(10)    NOT NULL,
-   date_of_birth        DATE    ,
    date_joined          TIMESTAMP    
 );
 

@@ -1,88 +1,112 @@
 package controller
 
 import (
-	"bytes"
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/reacthead/quest/internal/app/model"
 	"github.com/reacthead/quest/internal/app/repository"
+	"github.com/reacthead/quest/internal/app/shared/errorplay"
 )
 
-var User []model.User
-
+// GetUser gets a single user
 func GetUser(w http.ResponseWriter, req *http.Request) {
 
 	params := mux.Vars(req)
 	uid := params["id"]
-
 	i, err := strconv.Atoi(uid)
-	if err != nil {
-		fmt.Println(err)
-	}
+
+	errorplay.CheckErr(err)
 
 	id := uint64(i)
 
 	user, err := repository.GetOne(id)
-	if err != nil {
-		fmt.Println(err)
-	}
+	errorplay.CheckErr(err)
 
-	json.NewEncoder(w).Encode(user)
+	b, err := json.Marshal(user)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	os.Stdout.Write(b)
+
 }
 
+// GetUsers gets all users
 func GetUsers(w http.ResponseWriter, req *http.Request) {
-
-	Users, err := repository.GetAll()
+	users, err := repository.GetAll()
+	errorplay.CheckErr(err)
+	b, err := json.Marshal(users)
 	if err != nil {
-		fmt.Println("error")
+		fmt.Println("error:", err)
 	}
-	json.NewEncoder(w).Encode(Users)
+	os.Stdout.Write(b)
 }
 
+// CreateUser creates a user
 func CreateUser(w http.ResponseWriter, req *http.Request) {
 	body, readErr := ioutil.ReadAll(req.Body)
-	if readErr != nil {
-		log.Fatal(readErr)
-	}
+	errorplay.CheckErr(readErr)
 
 	requestBody := []byte(body)
-	dec := json.NewDecoder(bytes.NewReader(requestBody))
-	registerInstance := model.User{}
-	err := dec.Decode(&registerInstance)
+
+	var user model.User
+	err := json.Unmarshal(requestBody, &user)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("error:", err)
 	}
 
-	u := repository.Post(registerInstance)
+	u := repository.Post(user)
 
 	fmt.Println(u)
 
 }
 
-func DeleteUser(w http.ResponseWriter, req *http.Request) {
+// UpdateUser updates user by finding the id and updating the attributes
+func UpdateUser(w http.ResponseWriter, req *http.Request) {
+
 	params := mux.Vars(req)
-	for index, item := range User {
-		i, err := strconv.ParseInt(params["id"], 10, 32)
-		if err != nil {
-			panic(err)
-		}
-		result := uint64(i)
-		if item.UID == result {
-			User = append(User[:index], User[index+1:]...)
-			break
-		}
-	}
-	json.NewEncoder(w).Encode(User)
+	uid := params["id"]
+
+	i, err := strconv.Atoi(uid)
+	errorplay.CheckErr(err)
+
+	id := uint64(i)
+
+	body, readErr := ioutil.ReadAll(req.Body)
+	errorplay.CheckErr(readErr)
+
+	requestBody := []byte(body)
+	var user model.User
+	err = json.Unmarshal(requestBody, &user)
+	errorplay.CheckErr(err)
+	fmt.Printf("%+v", user)
+
+	var changedUID = id
+	changedUID, err = repository.Put(id, user)
+	errorplay.CheckErr(err)
+
+	fmt.Println(changedUID)
+
 }
 
-//ToNullString invalidates a sql.NullString if empty, validates if not empty
-func ToNullString(s string) sql.NullString {
-	return sql.NullString{String: s, Valid: s != ""}
+// DeleteUser removes a single user
+func DeleteUser(w http.ResponseWriter, req *http.Request) {
+	params := mux.Vars(req)
+
+	uid := params["id"]
+
+	i, err := strconv.Atoi(uid)
+	errorplay.CheckErr(err)
+
+	id := uint64(i)
+
+	user, err := repository.Delete(id)
+	errorplay.CheckErr(err)
+
+	json.NewEncoder(w).Encode(user)
 }
