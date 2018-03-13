@@ -1,25 +1,26 @@
 package model
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
-	"github.com/lib/pq"
 )
 
 // User model
 type User struct {
 	gorm.Model
-	UID          uint64      `gorm:"primary_key"`
-	UserName     string      `json:"username"`
-	Password     string      `json:"password"`
-	Gender       string      `json:"gender"`
-	FirstName    string      `json:"firstname"`
-	LastName     string      `json:"lastname"`
-	MiddleName   string      `json:"middlename"`
-	EmailAddress string      `json:"emailaddress"`
-	Picture      string      `json:"picture"`
-	Status       string      `json:"status"`
-	Role         string      `json:"role"`
-	DateJoined   pq.NullTime `json:"datejoined"`
+	UID          uint64    `gorm:"primary_key"`
+	UserName     string    `json:"username"`
+	Password     string    `json:"password"`
+	Gender       string    `json:"gender"`
+	FirstName    string    `json:"firstname"`
+	LastName     string    `json:"lastname"`
+	MiddleName   string    `json:"middlename"`
+	EmailAddress string    `json:"emailaddress"`
+	Picture      string    `json:"picture"`
+	Status       string    `json:"status"`
+	Role         string    `json:"role"`
+	DateJoined   time.Time `json:"datejoined"`
 	task         []Task
 }
 
@@ -36,7 +37,7 @@ func NewUser(
 	picture string,
 	status,
 	role string,
-	dateJoined pq.NullTime,
+	dateJoined time.Time,
 	task []Task) User {
 	user := new(User)
 	user.UID = uid

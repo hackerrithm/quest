@@ -6,7 +6,6 @@ import (
 
 	"github.com/reacthead/quest/internal/app/shared/errorplay"
 
-	"github.com/lib/pq"
 	"github.com/reacthead/quest/internal/app/model"
 	"github.com/reacthead/quest/internal/app/shared/database"
 )
@@ -46,7 +45,7 @@ func Post(user model.User) model.User {
 	DB, err := database.NewGormOpen()
 	errorplay.CheckErr(err)
 
-	user.DateJoined = pq.NullTime{Time: time.Now(), Valid: true}
+	user.DateJoined = time.Now()
 
 	DB.NewRecord(user)
 	DB.Create(&user)
