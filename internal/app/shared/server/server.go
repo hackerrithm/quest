@@ -25,11 +25,11 @@ func DBInitializerCaller() {
 
 	fmt.Println("Connected to database: ", DB)
 
-	// Create table for model `User`
-	//DB.CreateTable(&model.User{})
+	//Create table for model `Task`
+	//DB.CreateTable(&model.Task{})
 
-	// will append "ENGINE=InnoDB" to the SQL statement when creating table `users`
-	//DB.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&model.User{})
+	//will append "ENGINE=InnoDB" to the SQL statement when creating table `task`
+	//DB.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&model.Task{})
 
 }
 
