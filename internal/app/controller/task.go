@@ -9,35 +9,37 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/reacthead/quest/internal/app/model"
-	"github.com/reacthead/quest/internal/app/repository/task"
-	"github.com/reacthead/quest/internal/app/shared/errorplay"
+	"github.com/reacthead/quest/internal/app/domain/model"
+	"github.com/reacthead/quest/internal/app/infrastructure/shared/errorplay"
+	"github.com/reacthead/quest/internal/app/interfaces/repository/task"
 )
 
 // GetTask gets a single task
-func GetTask(w http.ResponseWriter, req *http.Request) {
+func GetTask(response http.ResponseWriter, req *http.Request) {
 
 	params := mux.Vars(req)
 	uid := params["id"]
 	i, err := strconv.Atoi(uid)
-
 	errorplay.CheckErr(err)
-
 	id := uint64(i)
 
 	taskModel, err := task.GetOne(id)
 	errorplay.CheckErr(err)
 
-	b, err := json.Marshal(taskModel)
+	taskJSON, err := json.Marshal(taskModel)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	os.Stdout.Write(b)
+	os.Stdout.Write(taskJSON)
+
+	response.Header().Set("Content-Type", "application/json")
+	response.WriteHeader(http.StatusCreated)
+	response.Write(taskJSON)
 
 }
 
 // GetTasks gets all tasks
-func GetTasks(w http.ResponseWriter, req *http.Request) {
+func GetTasks(response http.ResponseWriter, req *http.Request) {
 
 	param1 := req.URL.Query().Get("user-id")
 
@@ -48,34 +50,51 @@ func GetTasks(w http.ResponseWriter, req *http.Request) {
 	tasks, err := task.GetAllForUser(id)
 	errorplay.CheckErr(err)
 
-	b, err := json.Marshal(tasks)
+	taskJSON, err := json.Marshal(tasks)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	os.Stdout.Write(b)
+	os.Stdout.Write(taskJSON)
+
+	response.Header().Set("Content-Type", "application/json")
+	response.WriteHeader(http.StatusCreated)
+	response.Write(taskJSON)
 }
 
 // CreateTask creates a task
-func CreateTask(w http.ResponseWriter, req *http.Request) {
-	body, readErr := ioutil.ReadAll(req.Body)
-	errorplay.CheckErr(readErr)
-
-	requestBody := []byte(body)
+func CreateTask(response http.ResponseWriter, req *http.Request) {
 
 	var taskModel model.Task
-	err := json.Unmarshal(requestBody, &taskModel)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
+
+	err := json.NewDecoder(req.Body).Decode(&taskModel)
+	errorplay.CheckErr(err)
+
+	userJSON, err := json.Marshal(taskModel)
+	errorplay.CheckErr(err)
 
 	u := task.Post(taskModel)
 
-	fmt.Println(u)
+	un := json.Unmarshal(userJSON, &u)
+
+	fmt.Println(un)
+
+	response.Header().Set("Content-Type", "application/json")
+	response.WriteHeader(http.StatusCreated)
+	response.Write(userJSON)
 
 }
 
 // UpdateTask updates task by finding the id and updating the attributes
-func UpdateTask(w http.ResponseWriter, req *http.Request) {
+func UpdateTask(response http.ResponseWriter, req *http.Request) {
+
+	param1 := req.URL.Query().Get("user-id")
+
+	index, err := strconv.Atoi(param1)
+	errorplay.CheckErr(err)
+
+	userID := uint64(index)
+
+	fmt.Println(userID)
 
 	params := mux.Vars(req)
 	uid := params["id"]
@@ -100,10 +119,13 @@ func UpdateTask(w http.ResponseWriter, req *http.Request) {
 
 	fmt.Println(changedUID)
 
+	response.Header().Set("Content-Type", "application/json")
+	response.WriteHeader(http.StatusCreated)
+	response.Write(requestBody)
 }
 
 // UpdateAllTask updates task by finding the id and updating the attributes
-func UpdateAllTask(w http.ResponseWriter, req *http.Request) {
+func UpdateAllTask(response http.ResponseWriter, req *http.Request) {
 
 	param1 := req.URL.Query().Get("user-id")
 
@@ -127,10 +149,14 @@ func UpdateAllTask(w http.ResponseWriter, req *http.Request) {
 
 	fmt.Println(changedUID)
 
+	response.Header().Set("Content-Type", "application/json")
+	response.WriteHeader(http.StatusCreated)
+	response.Write(requestBody)
+
 }
 
 // DeleteTask removes a single task
-func DeleteTask(w http.ResponseWriter, req *http.Request) {
+func DeleteTask(response http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
 
 	uid := params["id"]
@@ -143,11 +169,11 @@ func DeleteTask(w http.ResponseWriter, req *http.Request) {
 	taskModel, err := task.Delete(id)
 	errorplay.CheckErr(err)
 
-	json.NewEncoder(w).Encode(taskModel)
+	json.NewEncoder(response).Encode(taskModel)
 }
 
 // DeleteAllTask removes a single task
-func DeleteAllTask(w http.ResponseWriter, req *http.Request) {
+func DeleteAllTask(response http.ResponseWriter, req *http.Request) {
 
 	param1 := req.URL.Query().Get("user-id")
 
@@ -159,5 +185,5 @@ func DeleteAllTask(w http.ResponseWriter, req *http.Request) {
 	taskModel, err := task.DeleteAll(id)
 	errorplay.CheckErr(err)
 
-	json.NewEncoder(w).Encode(taskModel)
+	json.NewEncoder(response).Encode(taskModel)
 }

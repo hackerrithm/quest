@@ -9,9 +9,9 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/reacthead/quest/internal/app/model"
-	"github.com/reacthead/quest/internal/app/repository/user"
-	"github.com/reacthead/quest/internal/app/shared/errorplay"
+	"github.com/reacthead/quest/internal/app/domain/model"
+	"github.com/reacthead/quest/internal/app/infrastructure/shared/errorplay"
+	"github.com/reacthead/quest/internal/app/interfaces/repository/user"
 )
 
 // GetUser gets a single user
