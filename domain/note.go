@@ -7,7 +7,7 @@ import (
 type (
 	Note struct {
 		gorm.Model
-		Tasks    []Task
+		Tasks    []Task `json:"tasks"`
 		Title    string `json:"title"`
 		Content  string `json:"content"`
 		Category string `json:"category"`
@@ -17,7 +17,7 @@ type (
 
 	Task struct {
 		gorm.Model
-		NoteID  uint   `gorm:"index"`
+		NoteID  uint   `json:"note-id" gorm:"index"`
 		Content string `json:"content"`
 	}
 )
