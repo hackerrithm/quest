@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/reacthead/alpharithm/adapters/web"
-	"github.com/reacthead/alpharithm/engine"
-	psqlrepo "github.com/reacthead/alpharithm/providers/postgres"
-	"github.com/reacthead/alpharithm/shared/database"
+	"github.com/reacthead/quest/adapters/web"
+	"github.com/reacthead/quest/engine"
+	psqlrepo "github.com/reacthead/quest/providers/postgres"
+	"github.com/reacthead/quest/shared/database"
 )
 
 func main() {
@@ -35,6 +35,7 @@ func StartDatabase() database.GORMDB {
 	database.CreateProfile(session)
 	database.CreateTask(session)
 	database.CreateNote(session)
+	database.ShowRelationshipTask(session)
 
 	return session
 }
