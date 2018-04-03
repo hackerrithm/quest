@@ -1,68 +1,56 @@
 import React, { Component } from "react";
 import { Route, Link } from 'react-router-dom'
+import { PostData } from '../../services/postData';
 
 class Login extends Component {
 
     constructor () {
         super();
-        this.state = {};
+        this.state = {
+            username: '',
+            password: ''
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
-    handleSubmit(event) {
-        console.log("clicked");
-        
-        event.preventDefault();
-        if (!event.target.checkValidity()) {
-            this.setState({
-            invalid: true,
-            displayErrors: true,
-          });
-          return;
-        }
-        const form = event.target;
-        const data = new FormData(form);
+    handleSubmit() {
+        console.log('====================================');
+        console.log("handle submit");
+        console.log('====================================');
+        PostData('register', this.state).then ((result) => {
+            let responseJSON = result;
+            console.log(responseJSON);
+            
+        })
+    }
+
+    onChange() {
+        console.log('====================================');
+        console.log("on changed triggered");
+        console.log('====================================');
+    }
+
     
-        for (let name of data.keys()) {
-          const input = form.elements[name];
-          const parserName = input.dataset.parse;
-          console.log('parser name is', parserName);
-          if (parserName) {
-            const parsedValue = inputParsers[parserName](data.get(name))
-            data.set(name, parsedValue);
-          }
-        }
-        
-        this.setState({
-            res: stringifyFormData(data),
-          invalid: false,
-          displayErrors: false,
-        });
-    
-        // fetch('/api/form-submit-url', {
-        //   method: 'POST',
-        //   body: data,
-        // });
-      }
       
     render() {
-        const { res, invalid, displayErrors } = this.state;
+        // const { res, invalid, displayErrors } = this.state;
         return (
             <div>
                   <div className="row">
-                    <form onSubmit={this.handleSubmit}>
+                    <form>
                         <div className="row">
                             <div className="input-field col s12">
-                            <input id="username" type="text" className="validate" />
+                            <input id="username" type="text" onChange={this.onChange} />
                             </div>
                         </div>
                         <div className="row">
                             <div className="input-field col s12">
-                            <input id="password" type="password" className="validate" />
+                            <input id="password" type="password" onChange={this.onChange} />
                             </div>
                         </div>
                         <div className="form-group">
-                            <button className="btn red">Login</button>
+                            <input id="login" className="btn red" type="submit" onClick={this.handleSubmit}/>
                             <Link to="/register" className="btn blue ">Register</Link>
                         </div>
                     </form>

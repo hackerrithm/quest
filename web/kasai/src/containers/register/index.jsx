@@ -1,53 +1,68 @@
 import React, { Component } from "react";
+import { PostData } from '../../services/postData';
+import { Route, Link } from 'react-router-dom';
+import axios from 'axios';
 
 class Register extends Component {
-    state = {  }
+    constructor () {
+        super();
+        this.state = {
+            username: '',
+            password: ''
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
+    }
+
+    handleSubmit() {
+        event.preventDefault();
+        console.log('====================================');
+        console.log("handle submit");
+        console.log('====================================');
+        PostData('register', this.state).then ((result) => {
+            console.log("state: " + this.state.username + " - " + this.state.password)
+            let responseJSON = result;
+            console.log(responseJSON);
+            
+        })
+        //alert('Your favorite flavor is: ' + this.state.username);
+        //event.preventDefault();
+    }
+
+
+    onChange = (e) => {
+        // Because we named the inputs to match their corresponding values in state, it's
+        // super easy to update the state
+        const state = this.state
+        state[e.target.name] = e.target.value;
+        this.setState(state);
+      }
+
+    onSubmit = (e) => {
+        e.preventDefault();
+        // get our form data out of state
+        const { username, password } = this.state;
+
+        axios.post('http://localhost:7000/v1/auth/register', { username, password })
+        .then((result) => {
+            console.log(result)
+            if(result.status == 200){
+                this.props.history.push("/profile");
+                console.log('Successfully Login');
+            }
+        });
+      }
+
+    
+      
     render() {
+        const { username, password } = this.state;
         return (
-            <div>
-                <div className="row">
-                    <form className="col s12">
-                    <div className="row">
-                        <div className="input-field col s6">
-                        <input placeholder="Placeholder" id="first_name" type="text" className="validate" />
-                        <label for="first_name">First Name</label>
-                        </div>
-                        <div className="input-field col s6">
-                        <input id="last_name" type="text" className="validate" />
-                        <label for="last_name">Last Name</label>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="input-field col s12">
-                        <input disabled value="I am not editable" id="disabled" type="text" className="validate" />
-                        <label for="disabled">Disabled</label>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="input-field col s12">
-                        <input id="password" type="password" className="validate" />
-                        <label for="password">Password</label>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="input-field col s12">
-                        <input id="email" type="email" className="validate" />
-                        <label for="email">Email</label>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col s12">
-                        This is an inline input field:
-                        <div className="input-field inline">
-                            <input id="email_inline" type="email" className="validate" />
-                            <label for="email_inline">Email</label>
-                            <span className="helper-text" data-error="wrong" data-success="right">Helper text</span>
-                        </div>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-            </div>
+          <form onSubmit={this.onSubmit}>
+            <input type="text" name="username" value={username} onChange={this.onChange} />
+            <input type="text" name="password" value={password} onChange={this.onChange} />
+            <button type="submit">Submit</button>
+          </form>
         );
     }
 }

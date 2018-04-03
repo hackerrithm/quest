@@ -6,6 +6,7 @@ import Footer from "../footer";
 import Counter from "../counter";
 import Login from "../login";
 import Register from "../register";
+import Profile from '../profile';
 
 const App = () => (
   <div>
@@ -13,7 +14,7 @@ const App = () => (
       <div className="navbar-fixed">
       <nav className="blue">
         <div className="nav-wrapper">
-          <a className="brand-logo"><Link to="/">Logo</Link></a>
+         
           <ul className="right hide-on-med-and-down">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/counter">Counter</Link></li>
@@ -28,10 +29,11 @@ const App = () => (
 
     <main>
       <Route exact path="/" component={Home} />
-      <Route exact path="/about-us" component={About} />
-      <Route exact path="/counter" component={Counter} />
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/register" component={Register} />
+      <Route path="/about-us" component={About} />
+      <Route path="/counter" component={Counter} />
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
+      <Route path="/profile" component={Profile} />
     </main>
 
     <div>
