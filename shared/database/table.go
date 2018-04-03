@@ -1,6 +1,6 @@
 package database
 
-import "github.com/reacthead/alpharithm/domain"
+import "github.com/reacthead/quest/domain"
 
 // CreateUser creates user table
 func CreateUser(session GORMDB) {
@@ -120,4 +120,9 @@ func CreateTask(session GORMDB) {
 		session.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&domain.Task{})
 
 	}
+}
+
+// ShowRelationship creates the relationship
+func ShowRelationshipTask(session GORMDB) {
+	session.Model(&domain.Note{}).Related(&domain.Task{})
 }

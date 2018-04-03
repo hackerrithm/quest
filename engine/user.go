@@ -3,13 +3,13 @@ package engine
 import (
 	"sync"
 
-	"github.com/reacthead/alpharithm/domain"
+	"github.com/reacthead/quest/domain"
 )
 
 type (
 	User interface {
 		Register(*domain.User) (*domain.User, error)
-		Get(*domain.User) (*domain.User, error)
+		Get( /**domain.User*/ uint) (*domain.User, error)
 		Edit(uint, *domain.User) (*domain.User, error)
 		Remove(uint) uint
 	}
@@ -33,8 +33,8 @@ func (f *factory) NewUser() User {
 	return userInstance
 }
 
-func (u *user) Get(r *domain.User) (*domain.User, error) {
-	return u.repo.Find(r.UID)
+func (u *user) Get(r uint /**domain.User*/) (*domain.User, error) {
+	return u.repo.Find(r /*.ID*/)
 }
 
 func (u *user) Register(r *domain.User) (*domain.User, error) {

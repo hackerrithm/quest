@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/reacthead/alpharithm/engine"
+	"github.com/reacthead/quest/engine"
 )
 
 type (
@@ -39,5 +40,6 @@ func NewWebAdapter(f engine.Factory) http.Handler {
 	r.Handle("/v1/auth/note/{id}/edit", errHandlerFunc(note.edit)).Methods("PUT")
 	r.Handle("/v1/auth/note/{id}/remove", errHandlerFunc(note.remove)).Methods("DELETE")
 
-	return r
+	q := handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r)
+	return q
 }

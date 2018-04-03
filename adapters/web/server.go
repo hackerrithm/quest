@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/reacthead/alpharithm/engine"
+	"github.com/reacthead/quest/engine"
 )
 
 // StartServer starts the server

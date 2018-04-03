@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/reacthead/alpharithm/domain"
-	"github.com/reacthead/alpharithm/engine"
+	"github.com/reacthead/quest/domain"
+	"github.com/reacthead/quest/engine"
 )
 
 type response struct {
@@ -35,7 +35,7 @@ func (u *user) retrieve(w http.ResponseWriter, r *http.Request) error {
 	}
 	id := uint(i)
 
-	usr, err := u.Get(&domain.User{UID: id})
+	usr, err := u.Get(id)
 	if err != nil {
 		return err
 	}

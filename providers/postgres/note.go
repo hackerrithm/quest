@@ -3,10 +3,9 @@ package postgres
 import (
 	"fmt"
 
-	"github.com/reacthead/alpharithm/engine"
-
-	"github.com/reacthead/alpharithm/domain"
-	"github.com/reacthead/alpharithm/shared/database"
+	"github.com/reacthead/quest/domain"
+	"github.com/reacthead/quest/engine"
+	"github.com/reacthead/quest/shared/database"
 )
 
 type (

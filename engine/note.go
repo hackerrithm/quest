@@ -3,7 +3,7 @@ package engine
 import (
 	"sync"
 
-	"github.com/reacthead/alpharithm/domain"
+	"github.com/reacthead/quest/domain"
 )
 
 type (

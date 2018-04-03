@@ -15,7 +15,7 @@ type (
 	// User represents the model of a user
 	User struct {
 		gorm.Model
-		UID              uint          `gorm:"unique"`
+		UID              uint          //`gorm:"unique"`
 		PermissionLevel  int32         `json:"permission"`
 		UserName         string        `json:"username" gorm:"unique"`
 		Password         string        `json:"password"`

@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"github.com/reacthead/alpharithm/domain"
+	"github.com/reacthead/quest/domain"
 )
 
 type (

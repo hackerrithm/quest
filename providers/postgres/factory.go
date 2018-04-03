@@ -3,9 +3,9 @@ package postgres
 import (
 	"sync"
 
-	"github.com/reacthead/alpharithm/shared/database"
+	"github.com/reacthead/quest/shared/database"
 
-	"github.com/reacthead/alpharithm/engine"
+	"github.com/reacthead/quest/engine"
 )
 
 type (

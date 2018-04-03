@@ -1,6 +1,6 @@
 package postgres
 
-import "github.com/reacthead/alpharithm/shared/database"
+import "github.com/reacthead/quest/shared/database"
 
 type (
 	tableName string

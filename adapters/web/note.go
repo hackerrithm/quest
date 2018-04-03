@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/reacthead/alpharithm/domain"
-	"github.com/reacthead/alpharithm/engine"
+	"github.com/reacthead/quest/domain"
+	"github.com/reacthead/quest/engine"
 )
 
 type (
