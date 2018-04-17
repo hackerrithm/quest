@@ -5,6 +5,7 @@ import (
 
 	"github.com/reacthead/quest/adapters/web"
 	"github.com/reacthead/quest/engine"
+	"github.com/reacthead/quest/providers"
 	psqlrepo "github.com/reacthead/quest/providers/postgres"
 	"github.com/reacthead/quest/shared/database"
 )
@@ -45,7 +46,13 @@ func SessionFactoryInitializer(session database.GORMDB) engine.Factory {
 	var sf engine.StorageFactory
 	sf = psqlrepo.NewStorage(session)
 
-	f := engine.New(sf)
+	var (
+		jwt engine.JWTSignParser
+	)
+
+	jwt = providers.NewJWT()
+
+	f := engine.New(sf, jwt)
 
 	return f
 }

@@ -9,6 +9,7 @@ type (
 	UserRepository interface {
 		Add(*domain.User) error
 		Find(uint) (*domain.User, error)
+		OneByUserName(string) (*domain.User, error)
 		Update(uint, *domain.User) (*domain.User, error)
 		Delete(uint) uint
 	}

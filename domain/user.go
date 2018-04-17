@@ -108,3 +108,7 @@ func (u *User) SetPassword(p string) {
 
 	u.Password = string(hashedPassword)
 }
+
+func (u *User) GetPassword() []byte {
+	return nil
+}

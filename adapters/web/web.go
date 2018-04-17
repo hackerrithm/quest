@@ -29,10 +29,11 @@ func NewWebAdapter(f engine.Factory) http.Handler {
 	user := newUser(f)
 	note := newNote(f)
 
-	r.Handle("/v1/auth/register", errHandlerFunc(user.register)).Methods("POST")
-	r.Handle("/v1/auth/retrieve/{id}", (errHandlerFunc(user.retrieve))).Methods("GET")
-	r.Handle("/v1/auth/edit/{id}", errHandlerFunc(user.edit)).Methods("PUT")
-	r.Handle("/v1/auth/remove/{id}", errHandlerFunc(user.remove)).Methods("DELETE")
+	r.Handle("/v1/auth/user/register", errHandlerFunc(user.register)).Methods("POST")
+	r.Handle("/v1/auth/user/login", errHandlerFunc(user.login)).Methods("POST")
+	r.Handle("/v1/auth/user/retrieve/{id}", (errHandlerFunc(user.retrieve))).Methods("GET")
+	r.Handle("/v1/auth/user/edit/{id}", errHandlerFunc(user.edit)).Methods("PUT")
+	r.Handle("/v1/auth/user/remove/{id}", errHandlerFunc(user.remove)).Methods("DELETE")
 
 	r.Handle("/v1/auth/note/create", errHandlerFunc(note.create)).Methods("POST")
 	r.Handle("/v1/auth/note/{id}/retrieve", (errHandlerFunc(note.retrieve))).Methods("GET")
@@ -40,6 +41,8 @@ func NewWebAdapter(f engine.Factory) http.Handler {
 	r.Handle("/v1/auth/note/{id}/edit", errHandlerFunc(note.edit)).Methods("PUT")
 	r.Handle("/v1/auth/note/{id}/remove", errHandlerFunc(note.remove)).Methods("DELETE")
 
-	q := handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r)
+	q := handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}),
+		handlers.AllowedOrigins([]string{"*"}))(r)
 	return q
 }

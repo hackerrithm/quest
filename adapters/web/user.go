@@ -60,6 +60,27 @@ func (u *user) register(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+func (u *user) login(w http.ResponseWriter, r *http.Request) error {
+	req := new(domain.User)
+	if err := decodeReq(r, req); err != nil {
+		return err
+	}
+
+	usr, err := u.Login(req)
+	if err != nil {
+		return err
+	}
+
+	jwt, err := u.GenToken(usr, engine.AuthToken)
+	if err != nil {
+		return err
+	}
+
+	RespondWithJson(w, http.StatusOK /*usr*/, response{jwt})
+
+	return nil
+}
+
 func (u *user) edit(w http.ResponseWriter, r *http.Request) error {
 	params := mux.Vars(r)
 	uid := params["id"]
