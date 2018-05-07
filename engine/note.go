@@ -50,6 +50,7 @@ func (n *note) Create(r *domain.Note) (*domain.Note, error) {
 	nte.Content = r.Content
 	nte.Category = r.Category
 	nte.Status = r.Status
+	nte.UserID = r.UserID
 
 	err := n.repo.Add(&nte)
 	if err != nil {

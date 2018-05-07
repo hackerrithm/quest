@@ -66,7 +66,6 @@ func (u *note) create(w http.ResponseWriter, r *http.Request) error {
 	if err := decodeReq(r, req); err != nil {
 		return err
 	}
-
 	usr, err := u.Create(req)
 	if err != nil {
 		return err
