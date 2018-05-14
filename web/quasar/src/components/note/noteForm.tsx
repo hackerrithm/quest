@@ -7,6 +7,7 @@ interface Props {
   note: NoteEntity;
   noteErrors: NoteErrors;
   onChange: (fieldName: string, value: string) => void;
+  //onChangeContent: (ieldName: string, value: string) => void;
   onSave: () => void;
 }
 
@@ -20,17 +21,26 @@ export const NoteForm: React.StatelessComponent<Props> = (props) => {
         label="Title"
         value={props.note.title}
         onChange={props.onChange}
-        // error={
-        //   !props.noteErrors.title.succeeded ?
-        //     '' :
-        //     props.noteErrors.title.errorMessage
-        // }
+      // error={
+      //   !props.noteErrors.title.succeeded ?
+      //     '' :
+      //     props.noteErrors.title.errorMessage
+      // }
       />
 
       <Input
         name="content"
         label="Content"
         value={props.note.content}
+        onChange={props.onChange}
+      />
+
+
+
+      <Input
+        name="status"
+        label="Status"
+        value={props.note.status}
         onChange={props.onChange}
       />
 

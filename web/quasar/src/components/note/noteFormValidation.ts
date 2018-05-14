@@ -10,6 +10,13 @@ const validationConstraints: ValidationConstraints = {
         validator: Validators.minLength,
         customParams: { length: 3 },
       },
+    ],
+    content: [
+      { validator: Validators.required },
+      {
+        validator: Validators.minLength,
+        customParams: { length: 3 },
+      },
     ]
   },
 };

@@ -5,6 +5,7 @@ import { NoteFieldChangePayload } from '../components/note/actions/notedFieldCha
 
 const createEmptyNoteErrors = (): NoteErrors => ({
   title: new FieldValidationResult(),
+  content: new FieldValidationResult(),
 });
 
 export const noteErrorsReducer = (state = createEmptyNoteErrors(), action) => {

@@ -10,7 +10,6 @@ export const saveNoteAction = (note: NoteEntity) => (dispatch) => {
   noteFormValidation.validateForm(note)
     .then((formValidationResult) => {
       if (formValidationResult.succeeded) {
-        note.user_id = 2;
         saveNote(note);
       }
       dispatch(saveNoteActionCompleted(formValidationResult));
@@ -18,7 +17,7 @@ export const saveNoteAction = (note: NoteEntity) => (dispatch) => {
 };
 
 const saveNote = (note: NoteEntity) => {
-  console.log('here 1')
+  // note.userID = 2;
   noteAPI.saveNote(note)
     .then(() => {
       toastr.success('Note saved.');

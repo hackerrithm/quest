@@ -1,6 +1,6 @@
-export interface NoteEntity {
-  id: number;
-  user_id: number;
+export class NoteEntity {
+  ID: number;
+  userID: number;
   tasks: Array<string>;
   title: string;
   content: string;
@@ -10,6 +10,6 @@ export interface NoteEntity {
 
 export interface TaskEntity {
   id: number;
-  note_id: number;
+  noteid: number;
   content: string;
 }

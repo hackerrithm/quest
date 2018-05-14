@@ -14,9 +14,10 @@ export const Header: React.StatelessComponent<{}> = () => {
           <div className="nav-wrapper">
             <Link to="/home" className="brand-logo">Quest</Link>
             <ul className="right hide-on-med-and-down">
+              <li><Link to="/notes">Notes</Link></li>
               <li><Link to="/about">About</Link></li>
               {/* <li><Link to="/members">Members</Link></li> */}
-              <li><Link to="/notes">Notes</Link></li>
+              
               {/* <li><a className="dropdown-trigger" href="#!" data-target="dropdown1">Dropdown<i className="material-icons right">arrow_drop_down</i></a></li> */}
             </ul>
           </div>

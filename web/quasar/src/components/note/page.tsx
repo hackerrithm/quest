@@ -21,7 +21,8 @@ export class NotePage extends React.Component<Props, {}> {
   }
 
   componentDidMount() {
-    //this.props.fetchNoteById(this.props.noteId);
+    this.props.fetchNoteById(this.props.noteId);
+    console.log(this.props.note.content,  " note ID")
   }
 
   private onChange(fieldName: string, value: string) {
@@ -30,6 +31,7 @@ export class NotePage extends React.Component<Props, {}> {
   }
 
   private onSave() {
+    this.props.note.userID = 2
     this.props.onSave(this.props.note);
   }
 

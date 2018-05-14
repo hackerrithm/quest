@@ -12,7 +12,7 @@ type (
 		Content  string `json:"content"`
 		Category string `json:"category"`
 		Status   string `json:"status"`
-		UserID   uint   `json:"user-id" gorm:"index"`
+		UserID   uint   `json:"userID" gorm:"index"`
 	}
 
 	Task struct {

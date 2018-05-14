@@ -1,5 +1,5 @@
-import { NoteEntity } from '../../model';
 import axios from 'axios';
+import { NoteEntity } from '../../model';
 
 const baseURL = 'http://localhost:7000/v1/auth/note';
 
@@ -15,8 +15,8 @@ const fetchNotesAsync = (): Promise<NoteEntity[]> => {
   const membersURL = `${baseURL}/retrieve-all?user-id=2`;
 
   return axios.get(membersURL)
-  .then((response) => (response.data))
-  .then(mapToNotes);
+              .then((response) => (response.data))
+              .then(mapToNotes);
 };
 
 const mapToNotes = (notes: any[]): NoteEntity[] => {
@@ -25,8 +25,8 @@ const mapToNotes = (notes: any[]): NoteEntity[] => {
 
 const mapToNote = (note): NoteEntity => {
   return {
-    id: note.id,
-    user_id: note.user_id,
+    ID: note.ID,
+    userID: note.user_id,
     tasks: note.tasks,
     title: note.title,
     content: note.content,
@@ -35,18 +35,35 @@ const mapToNote = (note): NoteEntity => {
   };
 };
 
-const saveNote = (member: NoteEntity): Promise<any> => {
-  let newNote:NoteEntity = member;
-  newNote.user_id = 2;
-  console.log(JSON.stringify(newNote, null, 4));
-  return axios.post(`${baseURL}/create`, newNote)
+const saveNote = (note: NoteEntity): Promise<any> => {
+  return axios.post(`${baseURL}/create`, note)
               .then(res => {
-                console.log(JSON.stringify(res));
+                console.log(JSON.stringify(res.data));
                 console.log(res.data);
               })
 };
 
+const fetchNoteById = (id: number): Promise<any> => {
+  return axios.get(`${baseURL}/${id}/retrieve?user-id=2`)
+              .then(res => {
+                const persons = res.data as NoteEntity;
+                console.log("persons::: ", persons.category)
+                return persons.ID
+              })
+}
+
+const deleteNote  = (id: number): Promise<any> => {
+  return axios.delete(`${baseURL}/${id}/remove?user-id=2`)
+              .then(res => {
+                console.log(res);
+                console.log(res.data);
+              })
+}
+
+
 export const noteAPI = {
   fetchNotes,
   saveNote,
+  fetchNoteById,
+  deleteNote
 };
