@@ -3,7 +3,7 @@ import * as React from 'react';
 interface Props {
   label?: string;
   className: string;
-  onClick?: (data?) => void;
+  onClick?: (data1?, data2?) => void;
 }
 
 export const Button: React.StatelessComponent<Props> = (props) => {

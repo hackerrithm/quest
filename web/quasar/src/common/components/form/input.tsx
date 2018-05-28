@@ -2,9 +2,9 @@ import * as React from "react";
 
 interface Props {
   name: string;
-  label: string;
+  label?: string;
   placeholder?: string;
-  value: string;
+  value?: string;
   onChange?: (fieldName: string, value: string) => void;
   error?: string;
 }
@@ -13,7 +13,7 @@ export const Input: React.StatelessComponent<Props> = (props) => {
   return (
     <div className={formatWrapperClass(props)}>
       
-      <div className="input-field col s6">
+      <div className="">
         <input type="text"
           name={props.name}
           className="form-control"

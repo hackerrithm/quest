@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/alioygur/gores"
 	"github.com/gorilla/mux"
 	"github.com/reacthead/quest/domain"
 	"github.com/reacthead/quest/engine"
@@ -24,6 +25,39 @@ type (
 func newUser(f engine.Factory) *user {
 	return &user{f.NewUser()}
 }
+
+func (u *user) activate(w http.ResponseWriter, r *http.Request) error {
+	req := new(engine.UserActivateRequest)
+	if err := decodeReq(r, req); err != nil {
+		return err
+	}
+
+	if err := u.Activate(req); err != nil {
+		tokenErr, ok := err.(*engine.TokenErr)
+		if ok {
+			if tokenErr.Expired() {
+				return newWebErr(expiredTokenErrCode, http.StatusBadRequest, err)
+			}
+			return newWebErr(invalidTokenErrCode, http.StatusBadRequest, err)
+		}
+		return err
+	}
+
+	gores.NoContent(w)
+	return nil
+}
+
+func (u *user) me(w http.ResponseWriter, r *http.Request) error {
+	me := domain.UserMustFromContext(r.Context())
+	req := engine.ShowUserRequest{ID: me.ID}
+	usr, err := u.Show(&req)
+	if err != nil {
+		return err
+	}
+	return gores.JSON(w, http.StatusOK, response{usr})
+}
+
+//
 
 func (u *user) retrieve(w http.ResponseWriter, r *http.Request) error {
 

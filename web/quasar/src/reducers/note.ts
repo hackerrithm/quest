@@ -14,6 +14,8 @@ const createEmptyNote = (): NoteEntity => ({
 
 export const noteReducer = (state = createEmptyNote(), action) => {
   switch (action.type) {
+    case actionTypes.UPDATE_NOTE_BY_ID_COMPLETED:
+      return handleUpdateNoteByIdCompleted(state, action.payload);
     case actionTypes.DELETE_NOTES_BY_ID:
       return handleDeleteNoteByIdCompleted(state, action.payload);
     case actionTypes.FETCH_NOTES_BY_ID_COMPLETED:
@@ -48,6 +50,10 @@ const handleUpdateNoteContentField = (state: NoteEntity, payload: NoteFieldChang
 
 
 const handleDeleteNoteByIdCompleted = (state: NoteEntity, payload: number): number => {
+  return payload;
+};
+
+const handleUpdateNoteByIdCompleted = (state: NoteEntity, payload: NoteEntity): NoteEntity => {
   return payload;
 };
 

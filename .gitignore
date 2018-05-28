@@ -1,5 +1,5 @@
 # dependencies
-/node_modules
+web/quasar/node_modules
 
 # testing
 /coverage

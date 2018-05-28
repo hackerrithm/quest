@@ -43,6 +43,14 @@ const saveNote = (note: NoteEntity): Promise<any> => {
               })
 };
 
+const updateNote = (note: NoteEntity, id: number): Promise<any> => {
+  return axios.put(`${baseURL}/${id}/edit?user-id=2`, note)
+              .then(res => {
+                console.log(JSON.stringify(res.data));
+                console.log(res.data);
+              })
+};
+
 const fetchNoteById = (id: number): Promise<any> => {
   return axios.get(`${baseURL}/${id}/retrieve?user-id=2`)
               .then(res => {
@@ -65,5 +73,6 @@ export const noteAPI = {
   fetchNotes,
   saveNote,
   fetchNoteById,
-  deleteNote
+  deleteNote,
+  updateNote
 };

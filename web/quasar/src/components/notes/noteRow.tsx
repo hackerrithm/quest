@@ -6,16 +6,17 @@ import { Button } from '../../common/components/form';
 interface Props {
   note: NoteEntity;
   deleteNote: (id: number) => void;
+  editNote: (note: NoteEntity, id: number) => void;
 }
 
 
-export const NoteRow: React.StatelessComponent<Props> = ({ note, deleteNote }) => {
+export const NoteRow: React.StatelessComponent<Props> = ({ note, deleteNote, editNote }) => {
 
   
 
  return (
           <div className="">
-            <div className="card horizontal">
+            <div className="card horizontal hoverable">
               <div className="card-stacked">
                 <h4 className="header center-align">        
                   <Link
@@ -34,11 +35,21 @@ export const NoteRow: React.StatelessComponent<Props> = ({ note, deleteNote }) =
                       onClick={
                         //e.preventDefault();
                         deleteNote
-                    }
+                    }/>
+
+                    <Button
+                        label="Edit"
+                        className="btn waves-effect waves-light teal"
+                        onClick={
+                          //e.preventDefault();
+                          editNote
+                      }
                     />
                 </div>
               </div>
             </div>
+            <br/>
+            <br/>
           </div>
   );
 };

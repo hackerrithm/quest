@@ -13,12 +13,10 @@ export const AppRouter: React.StatelessComponent<{}> = () => {
           <IndexRoute component={Home} />
           <Route path="/home" component={Home} />
           <Route path="/about" component={About} />
-          {/* <Route path="/members" component={MembersPageContainer} />
-          <Route path="/member" component={MemberPageContainer} />
-          <Route path="/member/:id" component={MemberPageContainer} /> */}
           <Route path="/notes" component={NotesPageContainer} />
           <Route path="/note" component={NotePageContainer} />
           <Route path="/note/:id" component={NotePageContainer} />
+          <Route path="/note/edit/:id" component={NotePageContainer} />
           <Route path="/note/remove/:id" component={NotePageContainer} />
         </Route>
       </Router>

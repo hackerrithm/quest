@@ -6,11 +6,11 @@ import { NoteEntity } from '../../../model';
 import { noteAPI } from '../../../api/note';
 import { noteFormValidation } from '../noteFormValidation';
 
-export const saveNoteAction = (member: NoteEntity) => (dispatch) => {
-  noteFormValidation.validateForm(member)
+export const saveNoteAction = (note: NoteEntity) => (dispatch) => {
+  noteFormValidation.validateForm(note)
     .then((formValidationResult) => {
       if (formValidationResult.succeeded) {
-        saveNote(member);
+        saveNote(note);
       }
       dispatch(saveNoteActionCompleted(formValidationResult));
     });

@@ -7,7 +7,7 @@ export const App: React.StatelessComponent<{}> = (props) => {
     <div className="container-fluid">
       <Header />
       {props.children}
-      <Footer />
+      {/* <Footer /> */}
     </div>
 
   );

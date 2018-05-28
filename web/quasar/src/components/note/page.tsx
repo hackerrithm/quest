@@ -10,19 +10,21 @@ interface Props {
   fetchNoteById: (id: number) => void;
   onChange: (note: NoteEntity, fieldName: string, value: string) => void;
   onSave: (note: NoteEntity) => void;
+  onUpdate: (note: NoteEntity) => void;
 }
 
 export class NotePage extends React.Component<Props, {}> {
   constructor() {
     super();
 
+    // this.setState(this.props.note)
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
   }
 
   componentDidMount() {
-    this.props.fetchNoteById(this.props.noteId);
-    console.log(this.props.note.content,  " note ID")
+    let x = this.props.fetchNoteById(this.props.noteId);
+    console.log(x,  " note ID")
   }
 
   private onChange(fieldName: string, value: string) {
@@ -31,7 +33,13 @@ export class NotePage extends React.Component<Props, {}> {
   }
 
   private onSave() {
-    this.props.note.userID = 2
+    //this.props.note.userID = 2
+    console.log(this.props.note.ID + " this.props.note.ID")
+    if (this.props.note.ID != null) {
+      console.log("present note")
+    } else {
+      
+    }
     this.props.onSave(this.props.note);
   }
 
